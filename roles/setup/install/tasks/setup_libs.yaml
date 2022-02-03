@@ -1,0 +1,24 @@
+---
+- name: Check for existing built {{ python_dist_name }}
+  shell:
+    cmd: python{{ python_version.rsplit('.', 1)[0] }} --version
+  register: existing_python
+  changed_when: false
+  ignore_errors: true
+
+# here would be our build python install block
+- name: Install missing libraries
+  block:
+
+  - name: Update package index
+    raw: sudo apt-get update
+    changed_when: false
+    ignore_errors: true
+    
+  - name: Install libraries
+    apt:
+      name: "{{ required_libs }}"
+      state: present
+      update_cache: true
+
+  when: existing_python is succeeded

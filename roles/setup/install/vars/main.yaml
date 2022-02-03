@@ -1,0 +1,28 @@
+---
+# requirements from https://github.com/IGS/gEAR/blob/main/docs/setup.python.md
+# see CHANGELOG
+required_libs:
+    - build-essential
+    - libssl-dev
+    - zlib1g-dev
+    - libncursesw5-dev
+    - libreadline-dev
+    - libapache2-mod-wsgi-py3
+    - libsqlite3-dev
+    - libgdbm-dev
+    - libbz2-dev
+    - lzma
+    - liblzma-dev
+    - libxml2-dev
+    - tk-dev
+    - libc6-dev
+    - libffi-dev
+    - libblas-dev
+    - liblapack-dev
+    - cmake
+    - python3-tk
+    - hdf5-tools
+    - libhdf5-dev
+    - hdf5-helpers
+    - git
+    

@@ -1,0 +1,13 @@
+---
+# This playbook will install mysql 
+
+- name: Install MySQL
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    #- mysql-server ??
+     - default-mysql-server
+    # do we want to add SELinux configuration?
+    #- libselinux-python
+    #- libsemanage-python

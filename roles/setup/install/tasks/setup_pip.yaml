@@ -1,0 +1,63 @@
+---
+- name: Install pip and Python packages via Debian package manager
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - python3-venv
+    - python3-pip
+    - python3-setuptools
+    - python3-numpy
+    - python3-scipy
+    - python3-sklearn
+    - python3-pandas
+    
+- name: Upgrade pip and setuptools
+  pip:
+    name: 
+      - pip
+      - setuptools
+    executable: pip3
+    extra_args: "--upgrade"
+    state: latest
+      
+- name: Pip install required Python packages
+  pip:
+    name:
+      - anndata==0.7.3
+      - biocode==0.9.0
+      - biopython==1.76
+      - dash-bio==0.6.1
+      - Flask==2.0.2 # upgraded
+      - Flask-Compress==1.10.1
+      - Flask-RESTful==0.3.8
+      - h5py==2.10.0
+      - jupyter==1.0.0
+      - kaleido==0.2.1
+      - louvain==0.7.1
+      - MulticoreTSNE==0.1
+      - mysql-connector-python==8.0.20
+      - numba==0.53.0 # upgraded
+      #- numpy==1.19.5 # upgraded, installed via package manager
+      - opencv-python==4.3.0.38 # upgraded
+      #- pandas==1.1.5 # upgraded, installed via package manager
+      - Pillow==8.1.2
+      - plotly==4.14.3
+      - python-dotenv==0.14.0
+      - requests==2.27.1
+      - scanpy==1.5.1
+      #- scikit-learn==0.23.2 # upgraded, installed via package manager
+      #- scipy==1.6.0 # upgraded, installed via package manager
+      - SQLAlchemy==1.2.12
+      - xlrd==1.2.0
+    executable: pip3
+
+# see https://github.com/IGS/gEAR/blob/main/docs/setup.python.md
+# Installing dash-bio (0.6.1) on the devel server upgraded plotly to 5.3.1, so we need to force install dash==1.2.1 and plotly==4.14.3
+- name: Force reinstall selected Python packages
+  pip:
+    name:
+      - dash==1.3.0
+      - plotly==4.14.3
+    executable: pip3
+    state: forcereinstall
+    

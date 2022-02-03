@@ -1,0 +1,21 @@
+---
+# Install Apache2 and the php modules
+
+- name: Install http and php
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apache2
+    - apache2-dev
+    #- libapache2-mod-wsgi ???
+    - libapache2-mod-wsgi-py3
+    - php
+    - php-mysql
+    
+    
+- name: Pip install Python WSGI Apache module
+  pip:
+    name:
+      - mod-wsgi==4.6.5
+    executable: pip3

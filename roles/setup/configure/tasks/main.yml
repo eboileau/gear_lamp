@@ -1,0 +1,11 @@
+---
+# Scanpy (or dependencies) assumes it can write in several directories which the web server won't be able to 
+# write to by default, so this can be fixed with:
+- name: Find scanpy installation
+  shell: pip show scanpy | grep Location | cut -d':' -f2 | sed 's/^ *//g'
+  register: install_loc
+
+- name: Set permission
+  shell:
+    chdir: "{{ install_loc.stdout }}/scanpy"
+    cmd: 'find ./ -name __pycache__ -exec chmod 777 {} \;'
