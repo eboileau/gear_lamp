@@ -1,5 +1,5 @@
 ---
-# requirements from https://github.com/IGS/gEAR/blob/main/docs/setup.python.md
+# requirements from https://github.com/dieterich-lab/gEAR/blob/main/docs/setup.python.md
 # see CHANGELOG
 required_libs:
     - build-essential
@@ -20,9 +20,7 @@ required_libs:
     - libblas-dev
     - liblapack-dev
     - cmake
-    - python3-tk
     - hdf5-tools
     - libhdf5-dev
     - hdf5-helpers
     - git
-    

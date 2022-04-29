@@ -9,12 +9,6 @@
     #persistent: yes
   #when: sestatus.rc != 0
 
-- name: Create MySQL configuration file
-  template:
-    src: my.cnf.j2
-    dest: /etc/my.cnf
-  notify: Restart mysql
-
 - name: Start MySQL service
   service:
     name: mysqld
@@ -29,25 +23,13 @@
 - name: Create application DB user
   mysql_user:
     name: "{{ dbuser }}"
-    password: "{{ upassword }}"
     priv: "*.*:ALL"
-    state: present
     
-# in case we clone the original repo
-- name: Update create_schema.sql ADMIN
-  lineinfile:
-    path: "~/git/gEAR/create_schema.sql"
-    regexp: "VALUES (0, 'gEAR admin', 'admin@localhost', 'UMaryland', 'fcdf1dc2c1ef7dec3dbb1a6e2c5e3c8a', 0, 1);"
-    line: "VALUES (0, 'admin', 'admin@localhost', 'Heidelberg University Hospital', '21232f297a57a5a743894a0e4a801fc3', 0, 1);"
-- name: Update create_schema.sql USER
-  lineinfile:
-    path: "~/git/gEAR/create_schema.sql"
-    regexp: "VALUES('jorvis@gmail.com', 'Joshua Orvis', 'IGS', 'e81e78d854d86edc38ba45c443662aee', 0, 1);"
-    line: "VALUES('boileau@uni-heidelberg.de', 'Etienne Boileau', 'Heidelberg University Hospital', 'edb88cc3012872fadf6965fca66d62c3', 0, 1);"
-       
 - name: Dump to DB
-  mysql_query:
-    login_db: "{{ dbname }}"
-    query: source ~/git/gEAR/create_schema.sql
+  mysql_db:
+    name: "{{ dbname }}"
+    state: import
+    target: "{{ repo_install }}/gEAR/create_schema.sql"
+    force: yes
     
        

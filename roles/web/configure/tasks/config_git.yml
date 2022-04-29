@@ -1,16 +1,16 @@
 ---
 # Copy code from the version control system
-
+  
 - name: Create local repo directory
   file:
     state: directory
     mode: 0775
-    path: "~/git"
+    path: "{{ repo_install }}/gEAR"
 
 - name: Clone
   git:
     repo: "{{ repository }}"
-    dest: ~/git
+    dest: "{{ repo_install }}/gEAR/"
 
 - name: Remove /var/www
   file: 
@@ -20,6 +20,11 @@
 - name: Link /var/www
   file: 
     path: /var/www 
-    src: ~/git/gEAR/www
+    src: "{{ repo_install }}/gEAR/www"
     state: link 
     force: yes
+
+# do we need to restart the server here?
+# sudo systemctl daemon-reload
+# sudo service apache2 restart
+# sudo systemctl status apache2.service

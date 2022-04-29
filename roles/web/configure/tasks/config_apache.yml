@@ -1,6 +1,6 @@
 ---
-# Configure Apache2 and the php modules
-# based on https://github.com/IGS/gEAR/blob/main/docs/setup.apache.md
+# Configure Apache and the php modules
+# partly based on https://github.com/IGS/gEAR/blob/main/docs/setup.apache.md
 
 - name: Enable the Apache2 modules mod-rewrite, CGI and WSGI
   apache2_module:
@@ -13,66 +13,43 @@
     - wsgi
     - proxy
     - ssl
-   
-- name: Insert/update apache2.conf
-  blockinfile:
-    block: "{{ lookup('file', 'roles/web/configure/files/apache2.conf') }}"
-    path: "/etc/apache2/apache2.conf"
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-    backup: yes
-  notify: Restart Apache
+
+- name: Copy custom configuration
+  template:
+    src: roles/web/configure/templates/gear.conf
+    dest: /etc/apache2/sites-available
+
+- name: Enable custom configuration
+  file:
+    src: /etc/apache2/sites-available/gear.conf
+    dest: /etc/apache2/sites-enabled/gear.conf
+    state: link
   
-# SSL: make sure apache redirects http traffic to https
-- name: Update 000-default.conf
-  lineinfile:
-    path: "/etc/apache2/sites-available/000-default.conf"
-    insertafter: '<VirtualHost *:80>\n'
-    line: '    Redirect permanent / https://{{ server }}/'
-  notify: Restart Apache
-    
 # Disable apache's PrivateTmp
 # gEAR lets users write datafiles such as analyses in an area under /tmp until they want to save, when they 
 # are moved to a directory within the application. If Apache has PrivateTmp on this causes an error like this:
 # OSError: [Errno 18] Invalid cross-device link
 # For now, the solution is to disable this.
+# 29.04.2022 Is this still relevant?
 - name: Find status of Apache PrivateTmp
   shell: systemctl show apache2 | grep PrivateTmp
   register: PrivateTmp
-    
+
 - name: Disable Apache PrivateTmp
   lineinfile:
     path: "/usr/lib/systemd/system/apache2.service"
     regexp: 'PrivateTmp='
     line: PrivateTmp=false
-    when: PrivateTmp.stdout.find('true') != -1
-  notify: Restart Apache
-
-- name: WSGI load
-  lineinfile:
-    path: "/etc/apache2/mods-available/wsgi.load"
-    regexp: 'LoadModule wsgi_module'
-    line: 'LoadModule wsgi_module "/usr/local/lib/python3.7/site-packages/mod_wsgi/server/mod_wsgi-py37.cpython-37m-x86_64-linux-gnu.so"'
-  notify: Restart Apache
-      
-- name: WSGI configuration
-  lineinfile:
-    path: "/etc/apache2/mods-enabled/wsgi.conf"
-    regexp: 'WSGIPythonHome'
-    insertafter: 'IfModule\n'
-    line: '    WSGIPythonHome "/usr/local"'
-  notify: Restart Apache      
-    
-# do we need to create this file?
-#- name: Creates the index.php file
-  #template:
-    #src: index.php.j2
-    #dest: /var/www/html/index.php
+  when: PrivateTmp.stdout.find('yes') != -1
+  notify: Restart Apache 
     
 # On Apache, php.ini is usually located in /etc/php/PHPVersion/apache2/php.ini
 - name: Find PHP version
   shell: php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;'
+  #shell: php -v|grep --only-matching --perl-regexp "(PHP )\d+\.\\d+\.\\d+"|cut -c 5-7
   register: PHPVersion
     
+# file upload limitations
 - name: Update php.ini post
   lineinfile:
     path: "/etc/php/{{ PHPVersion.stdout }}/apache2/php.ini"
@@ -83,22 +60,4 @@
     path: "/etc/php/{{ PHPVersion.stdout }}/apache2/php.ini"
     regexp: 'upload_max_filesize ='
     line: 'upload_max_filesize = 3000M'
-      
-      
-## TODO      
 
-## /etc/apache2/sites-available/umgear-ssl.conf
-## https://github.com/IGS/gEAR/blob/main/docs/setup.apache.md#etcapache2sites-availableumgear-sslconf
-
-## Custom config needed for Flask API
-## https://flask.palletsprojects.com/en/1.0.x/deploying/mod_wsgi/
-        
- 
-## ---    
-## check status sudo systemctl status apache2
-
-## Do we need to adjust the firewall: nftables?
-## nft add rule inet filter input tcp dport {80, 443} ct state new,established counter accept
-
-## To verify that Apache works correctly, open your browser, type http://10.250.135.19/, and you will see 
-## the default Apache welcome page

@@ -2,7 +2,7 @@
 # Scanpy (or dependencies) assumes it can write in several directories which the web server won't be able to 
 # write to by default, so this can be fixed with:
 - name: Find scanpy installation
-  shell: pip show scanpy | grep Location | cut -d':' -f2 | sed 's/^ *//g'
+  shell: "{{ python_venv_name }}/bin/pip show scanpy | grep Location | cut -d':' -f2 | sed 's/^ *//g'"
   register: install_loc
 
 - name: Set permission

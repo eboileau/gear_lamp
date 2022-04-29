@@ -1,30 +1,23 @@
 ---
 
 server: 10.250.135.19
-repository: https://github.com/IGS/gEAR.git
+# created recursively
+app_directory: /home/eboileau/dhart
+# source code
+repository: https://github.com/dieterich-lab/gEAR.git
+repo_install: "{{ app_directory }}"
 
-# currently same as gear.ini
-dbuser: gear
-dbname: gear_portal
-upassword: admin
-
-mysql_port: 3306
-
-# defaults requirements gEAR v0.9.0 (master) are partly overridden
-# currently use Debian 11 bullseye with system Python 3.9.2
+# Defaults requirements gEAR v0.9.0 (master) are partly overridden
+# Use system Python 3.9.2 to install virtual environment
+# Debian GNU/Linux 11 (bullseye) - 5.10.0-11-amd64
 
 python_version: 3.9.2
 python_dist_name:  "Python-{{ python_version }}"
+python_venv_base: "/usr/local/envs"
+python_venv_name: "{{ python_venv_base }}/dhart"
 
-# eventually this could be set-up for a local install
-# python_tarball: "{{ python_dist_name }}.tar.xz"
-# python_build_dir: "/tmp"
-# if not to /usr/local we need to update the build/install play to create directory, link binary and library locations, and/or update variables 
-# as well as the pip play "Set permission"
-# python_install_dir: "/usr/local" 
-
-python_install_dir: "/usr" 
-
-# python_cleanup: False  # if true, remove make directory after build
-# install
-# configure_flags: "--prefix={{ python_install_dir }} --enable-optimizations --enable-shared"
+# gear.ini
+dbuser: gear
+dbname: gear_portal
+# default
+mysql_port: 3306 
