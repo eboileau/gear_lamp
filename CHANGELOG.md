@@ -7,6 +7,10 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 
 ## [Unreleased] - 2022-04
 
+### TODO
+- Order of precedence of Apache configs? Setting `DocumentRoot /var/www` in custom config is not enough, we have to modify it in the 
+`000-default.conf`, and restart the server.
+
 ### Changed
 - Perform install of python packages in a virtual environment, however install selected packages via apt to avoid errors (see below). Added python3-virtualenv, python3-tk, and python3-opencv to the list. Note that this requires changing the WSGI scripts, and also the custom Apache config, see e.g. https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html#daemon-mode-multiple-applications.
 
