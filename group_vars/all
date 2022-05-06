@@ -1,6 +1,8 @@
 ---
 
 server: 10.250.135.19
+server_name: gear
+user_group: www-data
 # created recursively
 app_directory: /home/eboileau/dhart
 # source code

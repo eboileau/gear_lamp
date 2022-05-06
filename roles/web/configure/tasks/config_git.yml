@@ -23,8 +23,3 @@
     src: "{{ repo_install }}/gEAR/www"
     state: link 
     force: yes
-
-# do we need to restart the server here?
-# sudo systemctl daemon-reload
-# sudo service apache2 restart
-# sudo systemctl status apache2.service

@@ -43,22 +43,15 @@ ansible-playbook site.yml --tags [tag] --check -v 2>&1 | tee output.log
 ```
 
 **Note:** Before finalising the installation (before `db-config`), we need to manually checkout the **DHART** branch (and all upstream changes). There is no
-plan to include this into the playbook.
+plan to include this into the playbook!
 
 
-
-### Install notes - 27.04.2022 (eboileau@gear)
+### Install notes - eboileau@gear
 
 - Installing Debian packages with apt randomly fails with `502 Connection closed [IP: 10.250.140.16 3142]`. The only solution so far is
-to run the install until it works...
+to run the install until it works. This is _not_ reproducible.
 
-- TODO: Fix *Force reinstall selected Python packages* in `setup_pip.yaml` (upgrade?)
-
-- Install diffxpy: for now, we did not do anything. We should probably follow the same fix by `sudo pip3 install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021`.
-
-- What is the order of precedence of Apache config? Setting `DocumentRoot /var/www` in custom config is not enough, we have to modify it in the 
-`000-default.conf`, and restart the server. TODO: Fix this.
-
-
+- After finalising the installation, install `diffxpy` (follow the same fix): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
+the package will NOT be installed in the virtual environment).
 
 

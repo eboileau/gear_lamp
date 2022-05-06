@@ -7,15 +7,12 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 
 ## [Unreleased] - 2022-04
 
-### TODO
-- Order of precedence of Apache configs? Setting `DocumentRoot /var/www` in custom config is not enough, we have to modify it in the 
-`000-default.conf`, and restart the server.
-
 ### Changed
+- gear.conf is now the only VH configuration enabled, and the python-home is set to the virtual environment. 
 - Perform install of python packages in a virtual environment, however install selected packages via apt to avoid errors (see below). Added python3-virtualenv, python3-tk, and python3-opencv to the list. Note that this requires changing the WSGI scripts, and also the custom Apache config, see e.g. https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html#daemon-mode-multiple-applications.
 
 ### Added 
-- Custom Apache config, to avoid messing with existing default configs.
+- VH config for gear to avoid messing with existing default configs.
 
 ### Removed
 - mod-wsgi==4.9.0 and use default Debian libapache2-mod-wsgi-py3. Remove configuration `LoadModule wsgi_module`, and Python-related lines.
@@ -46,30 +43,4 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 ### Removed
 - Libraries: libreadline-gplv2-dev, libsqlite-dev
 - pathlib from python3 dependencies ()
-
-
-                
-                
-
-
-
-
-
-eboileau@gear:~$ sudo systemctl daemon-reload
-eboileau@gear:~$ sudo service apache2 restart
-eboileau@gear:~$ sudo systemctl status apache2.service
-
-had to accept the risks (no certificate)
-we need to add a security exceptiomn then
-
-QUESTION: is restarting the server in ansible sufficient, or do we also need to reload files etc.?
-
-
-but for this???
-Custom config needed for Flask API
-https://flask.palletsprojects.com/en/1.0.x/deploying/mod_wsgi/
-
-
-
-
 

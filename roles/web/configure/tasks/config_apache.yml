@@ -14,16 +14,18 @@
     - proxy
     - ssl
 
-- name: Copy custom configuration
+- name: Copy virtual host configuration for {{ server_name }}
   template:
-    src: roles/web/configure/templates/gear.conf
+    src: "roles/web/configure/templates/{{ server_name }}.conf"
     dest: /etc/apache2/sites-available
+    
+- name: Deactivate default virtualhost
+  command: a2dissite 000-default
+  notify: Restart Apache 
 
-- name: Enable custom configuration
-  file:
-    src: /etc/apache2/sites-available/gear.conf
-    dest: /etc/apache2/sites-enabled/gear.conf
-    state: link
+- name: Activate virtualhost {{ server_name }}
+  command: "a2ensite {{ server_name }}"
+  notify: Restart Apache
   
 # Disable apache's PrivateTmp
 # gEAR lets users write datafiles such as analyses in an area under /tmp until they want to save, when they 
