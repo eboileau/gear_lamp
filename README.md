@@ -43,7 +43,9 @@ ansible-playbook site.yml --tags [tag] --check -v 2>&1 | tee output.log
 ```
 
 **Note:** Before finalising the installation (before `db-config`), we need to manually checkout the **DHART** branch (and all upstream changes). There is no
-plan to include this into the playbook!
+plan to include this into the playbook! Default DB-related variables (`group_vars/all`) must match the settings _e.g_ in `gear.ini`.
+
+**Note:** When running CGI scripts through the web server, `PATH` does not see the virtual environment. Solutions such as [How to use Python virtual environments with mod_wsgi](https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html) do not seem to work for CGI scripts. So far, the solution is to specify the full path to the interpreter (`#!/usr/local/envs/dhart/bin/python`), so that the shell can find the local installation when it attempts to execute CGI programs. Hence default variables (`group_vars/all`) such as `python_venv_name` _must_ match the shebang in all CGI scripts. I think this also holds for the `www/p` script.
 
 
 ### Install notes - eboileau@gear
