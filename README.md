@@ -56,4 +56,5 @@ to run the install until it works. This is _not_ reproducible.
 - After finalising the installation, install `diffxpy` (follow the same fix): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
 the package will NOT be installed in the virtual environment).
 
-
+- Permissions need to be writeable for user. We did `cd dhart/gEAR/www/` and `sudo chmod 777 datasets analyses/* uploads/files/`. This has now
+been added to the playbook.

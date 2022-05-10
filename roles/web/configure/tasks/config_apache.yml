@@ -63,3 +63,14 @@
     regexp: 'upload_max_filesize ='
     line: 'upload_max_filesize = 3000M'
 
+# file upload permissions
+- name: Permissions need to be writeable for user
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: '0777'
+  with_items:
+    - /var/www/datasets
+    - /var/www/analyses/*
+    - /var/www/uploads/files
+    

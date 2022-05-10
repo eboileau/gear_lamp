@@ -13,6 +13,7 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 
 ### Added 
 - VH config for gear to avoid messing with existing default configs.
+- Set file permission for upload.
 
 ### Removed
 - mod-wsgi==4.9.0 and use default Debian libapache2-mod-wsgi-py3. Remove configuration `LoadModule wsgi_module`, and Python-related lines.
