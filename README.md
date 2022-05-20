@@ -1,8 +1,11 @@
-Ansible Playbook install for the gEAR repository (DHART) and LAMP stack
------------------------------------------------------------------------
+# Ansible Playbook install for the gEAR repository (DHART) and LAMP stack
+
+---
 
 Ansible version 2.11.7 (Python 3.7.3)
+
 Python 3.9.2 (host server)
+
 
 ```bash
 python3 -m venv ~/.pyvenv/ansible
@@ -14,11 +17,13 @@ python -m pip install ansible
 The inventory file defines the nodes in which the stack is configured.
 Defaults are set in `config file = /etc/ansible/ansible.cfg`.
 
-Basic setup instructions are taken from the [https://github.com/IGS/gEAR/blob/main/docs/setup.new_server.notes.md](gEAR setup page).
+Basic setup instructions are taken from the [gEAR setup page](https://github.com/IGS/gEAR/blob/main/docs/setup.new_server.notes.md).
 However, we made significant changes, including upgrade to Python 3.9.2, and install of pinned version of Python packages in a virtual environment.
-Selected packages were upgraded, and the installation/configuration was simplified. See [CHANGELOG.md](CHANGELOG).
+Selected packages were upgraded, and the installation/configuration was simplified. See [CHANGELOG](CHANGELOG.md).
 
-This playbook is partly adpated from the [https://github.com/ansible/ansible-examples](examples and best practices for building Ansible Playbooks).
+This playbook is partly adpated from the [examples and best practices for building Ansible Playbooks](https://github.com/ansible/ansible-examples).
+
+## Quickstart
 
 The stack is deployed using the following command:
 
