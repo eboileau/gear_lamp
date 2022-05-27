@@ -5,6 +5,12 @@ Changes to the DHART installation playbook (and to the gEAR setup) will be docum
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project currently does NOT adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [Unreleased] - 2022-05
+
+### Changed
+- Updated version of scanpy and immediate dependencies to solve h5ad reading errors in the portal.
+
 ## [Unreleased] - 2022-04
 
 ### Changed

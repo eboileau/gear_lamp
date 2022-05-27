@@ -44,14 +44,14 @@
 - name: Install required Python packages (pinned versions) into virtual environment
   pip:
     name:
-      - anndata==0.7.3
+      - anndata==0.8.0
       - biocode==0.9.0
       - biopython==1.76
       - dash-bio==0.6.1
       - Flask==2.0.2 # upgraded
       - Flask-Compress==1.10.1
       - Flask-RESTful==0.3.9
-      - h5py==2.10.0
+      - h5py==3.7.0
       - jupyter==1.0.0
       - kaleido==0.2.1
       - louvain==0.7.1
@@ -65,7 +65,7 @@
       - plotly==4.14.3
       - python-dotenv==0.14.0
       - requests==2.27.1
-      - scanpy==1.5.1
+      - scanpy==1.9.1
       #- scikit-learn==0.23.2 # upgraded, installed via package manager
       #- scipy==1.6.0 # upgraded, installed via package manager
       - SQLAlchemy==1.2.12
