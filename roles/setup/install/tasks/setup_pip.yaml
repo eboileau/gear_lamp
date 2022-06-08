@@ -1,18 +1,18 @@
 ---
-- name: Create install (gEAR/DHART) directory
+- name: Create install (gEAR/DHART) directory as {{ app_user }}
   file:
     state: directory
     recurse: yes
-    mode: 0775
+    mode: 0700
+    owner: "{{ app_user }}"
     path: "{{ app_directory }}"
 
-- name: Create virtual environment directory as {{ user_group }}
+- name: Create virtual environment directory as {{ app_user }}
   file:
     state: directory
     recurse: yes
-    mode: 0775
-    owner: "{{ user_group }}"
-    group: "{{ user_group }}"
+    mode: 0700
+    owner: "{{ app_user }}"
     path: "{{ python_venv_base }}"
     
 - name: Install selected Python packages via Debian package manager
@@ -39,7 +39,7 @@
     virtualenv: "{{ python_venv_name }}"
     virtualenv_site_packages: yes
     state: latest
-  become_user: "{{ user_group }}"
+  become_user: "{{ app_user }}"
     
 - name: Install required Python packages (pinned versions) into virtual environment
   pip:
@@ -72,7 +72,7 @@
       - xlrd==1.2.0
     umask: "0022"
     virtualenv: "{{ python_venv_name }}"
-  become_user: "{{ user_group }}"
+  become_user: "{{ app_user }}"
   
 # see https://github.com//dieterich-lab/gEAR/blob/main/docs/setup.python.md
 # Installing dash-bio (0.6.1) on the devel server upgraded plotly to 5.3.1, so we need to force install dash==1.2.1 and plotly==4.14.3
@@ -85,4 +85,4 @@
     umask: "0022"
     virtualenv: "{{ python_venv_name }}"
     state: forcereinstall
-  become_user: "{{ user_group }}"
+  become_user: "{{ app_user }}"

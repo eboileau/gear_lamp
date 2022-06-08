@@ -2,8 +2,10 @@
 # This playbook deploys the gEAR/DHART LAMP stack on the host server
 # Install required libraries, configure and deploy the webserver
 # and aplication code, deploy MySQL and configure the database
+
+# change hosts to the target host server
 - name: Deploy the gEAR/DHART LAMP stack on the host server
-  hosts: gear
+  hosts: gear2
   roles:
     - {role: "setup/install", tags: "setup-install"}
     - {role: "setup/configure", tags: "setup-config"}

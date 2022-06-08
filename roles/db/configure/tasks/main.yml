@@ -29,7 +29,8 @@
   mysql_db:
     name: "{{ dbname }}"
     state: import
-    target: "{{ repo_install }}/gEAR/create_schema.sql"
+    target: "{{ app_directory }}/gEAR/create_schema.sql"
     force: yes
+  notify: Restart Apache # restart Apache after creating DB...
     
        

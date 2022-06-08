@@ -8,8 +8,14 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 
 ## [Unreleased] - 2022-05
 
+### Added
+- Install test 2 and branch for DHART install.
+- host_vars (re-organise group_vars)
+
 ### Changed
 - Updated version of scanpy and immediate dependencies to solve h5ad reading errors in the portal.
+- Install app as www-data.
+- Clone using deploy keys (per server), and checkout DHART/dev branch.
 
 ## [Unreleased] - 2022-04
 

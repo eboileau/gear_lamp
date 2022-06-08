@@ -9,3 +9,6 @@
   shell:
     chdir: "{{ install_loc.stdout }}/scanpy"
     cmd: 'find ./ -name __pycache__ -exec chmod 777 {} \;'
+
+# Is this necessary? If Scanpy has been installed in our environment as app_user, then this should be sufficient...
+# 08.06.22 (gear2) skip this and see what happens...

@@ -1,17 +1,45 @@
 ---
 # Copy code from the version control system
-  
+# File upload permissions: Permissions should be writeable for application user
+
 - name: Create local repo directory
   file:
     state: directory
-    mode: 0775
-    path: "{{ repo_install }}/gEAR"
+    recurse: yes
+    mode: 0700
+    owner: "{{ app_user }}"
+    path: "{{ app_directory }}/gEAR"
 
-- name: Clone
+- name: Copy key
+  copy:
+    src: "{{ deploy_key_file }}"
+    dest: "{{ app_directory }}/.id_rsa"
+    mode: 0700
+    owner: "{{ app_user }}"
+    
+- name: Clone source code
   git:
     repo: "{{ repository }}"
-    dest: "{{ repo_install }}/gEAR/"
+    dest: "{{ app_directory }}/gEAR/"
+    accept_hostkey: yes
+    force: yes
+    clone: yes
+    key_file: "{{ app_directory }}/.id_rsa"
+  become_user: "{{ app_user }}"
 
+- name: Checkout DHART
+  git:
+    repo: "{{ repository }}"
+    dest: "{{ app_directory }}/gEAR/"
+    accept_hostkey: yes
+    force: yes
+    clone: no
+    key_file: "{{ app_directory }}/.id_rsa"
+    version: "DHART"
+  become_user: "{{ app_user }}"
+  
+# ideally, we want to use gEAR/www directly (i.e. avoid symlink), but /var/www is hard coded at various places in the code base...
+# so we stick to the current solution...
 - name: Remove /var/www
   file: 
     path: /var/www
@@ -20,6 +48,7 @@
 - name: Link /var/www
   file: 
     path: /var/www 
-    src: "{{ repo_install }}/gEAR/www"
+    src: "{{ app_directory }}/gEAR/www"
+    owner: "{{ app_user }}"
     state: link 
     force: yes

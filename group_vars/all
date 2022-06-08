@@ -1,13 +1,11 @@
 ---
 
-server: 10.250.135.19
-server_name: gear
-user_group: www-data
-# created recursively
-app_directory: /home/eboileau/dhart
 # source code
-repository: https://github.com/dieterich-lab/gEAR.git
-repo_install: "{{ app_directory }}"
+# https://github.com/dieterich-lab/gEAR.git
+repository: git@github.com:dieterich-lab/gEAR.git 
+
+# application user - owns the git project, app-related files, and python environment installation
+app_user: www-data
 
 # Defaults requirements gEAR v0.9.0 (master) are partly overridden
 # Use system Python 3.9.2 to install virtual environment
@@ -19,7 +17,7 @@ python_venv_base: "/usr/local/envs"
 python_venv_name: "{{ python_venv_base }}/dhart"
 
 # gear.ini
-dbuser: gear
-dbname: gear_portal
+dbuser: dhart
+dbname: dhart_db
 # default
 mysql_port: 3306 

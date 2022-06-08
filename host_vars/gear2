@@ -1,0 +1,9 @@
+---
+
+server_name: gear2
+server: 10.250.135.22
+
+# Location where to clone the source code and "install" the app
+app_directory: /home/eboileau/dhart
+# GitHub deploy key for this server
+deploy_key_file: roles/web/configure/files/gear2/id_rsa

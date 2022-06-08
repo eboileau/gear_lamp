@@ -1,0 +1,9 @@
+---
+
+server_name: dhart
+server: 10.250.140.151
+
+# Location where to clone the source code and "install" the app
+app_directory: /dhart
+# GitHub deploy key for this server
+deploy_key_file: roles/web/configure/files/dhart/id_rsa

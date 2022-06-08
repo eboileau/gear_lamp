@@ -47,19 +47,21 @@ To perform a dry-run, use
 ansible-playbook site.yml --tags [tag] --check -v 2>&1 | tee output.log
 ```
 
-**Note:** Before finalising the installation (before `db-config`), we need to manually checkout the **DHART** branch (and all upstream changes). There is no
-plan to include this into the playbook! Default DB-related variables (`group_vars/all`) must match the settings _e.g_ in `gear.ini`.
+**Note:** This playbook installs the **DHART** branch, and whatever latest commits were made, for instance values in `www/site_domain_prefs.json` are used _as is_. Default DB-related variables (`group_vars/all`) must match the settings in `gear.ini`, see also `create_schema.sql`.
 
-**Note:** When running CGI scripts through the web server, `PATH` does not see the virtual environment. Solutions such as [How to use Python virtual environments with mod_wsgi](https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html) do not seem to work for CGI scripts. So far, the solution is to specify the full path to the interpreter (`#!/usr/local/envs/dhart/bin/python`), so that the shell can find the local installation when it attempts to execute CGI programs. Hence default variables (`group_vars/all`) such as `python_venv_name` _must_ match the shebang in all CGI scripts. I think this also holds for the `www/p` script.
+**Note:** When running CGI scripts through the web server, `PATH` does not see the virtual environment. Solutions such as [How to use Python virtual environments with mod_wsgi](https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html) do not seem to work for CGI scripts. So far, the solution is to specify the full path to the interpreter (`#!/usr/local/envs/dhart/bin/python`), so that the shell can find the local installation when it attempts to execute CGI programs. Hence default variables (`group_vars/all`) such as `python_venv_name` _must_ match the shebang in all CGI scripts. I think this also holds for the `www/p` script. If installing the **DHART** branch, then there is nothing to do.
 
 
-### Install notes - eboileau@gear
+### Install notes - eboileau@gear 
 
-- Installing Debian packages with apt randomly fails with `502 Connection closed [IP: 10.250.140.16 3142]`. The only solution so far is
-to run the install until it works. This is _not_ reproducible.
+- Installing Debian packages with apt randomly fails with `502 Connection closed [IP: 10.250.140.16 3142]`. This is _not_ systematically reproducible. This is a specific issue with our firewall/proxy set-up. The only solution so far is to run the install until it works. 
 
-- After finalising the installation, install `diffxpy` (follow the same fix): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
-the package will NOT be installed in the virtual environment).
+- After finalising the installation, install `diffxpy` (follow the same fix for now): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
+the package will NOT be installed in the virtual environment). `pip show diffxpy` should show _e.g._ `/usr/local/envs/dhart/lib/python3.9/site-packages`.
 
-- Permissions need to be writeable for user. We did `cd dhart/gEAR/www/` and `sudo chmod 777 datasets analyses/* uploads/files/`. This has now
-been added to the playbook.
+- We skipped the `setup-config` tag in the latest install...
+
+- For `TASK [web/configure : Clone source code]`, we get `[WARNING]: Unable to use /var/www/.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/var/www/.ansible'`. This is because we performs this task as Apache user (www-data), but /var/www is owned by root.
+
+
+
