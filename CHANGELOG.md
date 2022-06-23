@@ -16,6 +16,7 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 - Updated version of scanpy and immediate dependencies to solve h5ad reading errors in the portal.
 - Install app as www-data.
 - Clone using deploy keys (per server), and checkout DHART/dev branch.
+- Revert back to HTTPS cloning without deploy keys.
 
 ## [Unreleased] - 2022-04
 

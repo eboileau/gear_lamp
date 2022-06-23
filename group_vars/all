@@ -1,8 +1,9 @@
 ---
 
 # source code
-# https://github.com/dieterich-lab/gEAR.git
-repository: git@github.com:dieterich-lab/gEAR.git 
+# we don't use the SSH key anymore
+# repository: git@github.com:dieterich-lab/gEAR.git 
+repository: https://github.com/dieterich-lab/gEAR.git
 
 # application user - owns the git project, app-related files, and python environment installation
 app_user: www-data

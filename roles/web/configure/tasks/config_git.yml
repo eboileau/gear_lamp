@@ -9,32 +9,21 @@
     mode: 0700
     owner: "{{ app_user }}"
     path: "{{ app_directory }}/gEAR"
-
-- name: Copy key
-  copy:
-    src: "{{ deploy_key_file }}"
-    dest: "{{ app_directory }}/.id_rsa"
-    mode: 0700
-    owner: "{{ app_user }}"
     
 - name: Clone source code
   git:
     repo: "{{ repository }}"
     dest: "{{ app_directory }}/gEAR/"
-    accept_hostkey: yes
     force: yes
     clone: yes
-    key_file: "{{ app_directory }}/.id_rsa"
   become_user: "{{ app_user }}"
 
 - name: Checkout DHART
   git:
     repo: "{{ repository }}"
     dest: "{{ app_directory }}/gEAR/"
-    accept_hostkey: yes
     force: yes
     clone: no
-    key_file: "{{ app_directory }}/.id_rsa"
     version: "DHART"
   become_user: "{{ app_user }}"
   
