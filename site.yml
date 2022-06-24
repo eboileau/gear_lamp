@@ -5,7 +5,7 @@
 
 # change hosts to the target host server
 - name: Deploy the gEAR/DHART LAMP stack on the host server
-  hosts: gear2
+  hosts: dhart
   roles:
     - {role: "setup/install", tags: "setup-install"}
     - {role: "setup/configure", tags: "setup-config"}

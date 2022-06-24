@@ -64,4 +64,14 @@ the package will NOT be installed in the virtual environment). `pip show diffxpy
 - For `TASK [web/configure : Clone source code]`, we get `[WARNING]: Unable to use /var/www/.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/var/www/.ansible'`. This is because we performs this task as Apache user (www-data), but /var/www is owned by root.
 
 
+### Install notes - eboileau@dhart
+
+- Make sure the setfacl tool (provided by the acl package) is installed on the remote host. `dpkg --list | grep acl` should show libraries AND command line utilities. We had to install `apt-get install acl`. We did not add this to the playbook.
+
+- Skip `setup-config` tag.
+
+- For `TASK [web/configure : Clone source code]`, we get `[WARNING]: Unable to use /var/www/.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/var/www/.ansible'`. This is because we performs this task as Apache user (www-data), but /var/www is owned by root.
+
+- After finalising the installation, install `diffxpy` (follow the same fix for now): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
+the package will NOT be installed in the virtual environment). `pip show diffxpy` should show _e.g._ `/usr/local/envs/dhart/lib/python3.9/site-packages`.
 
