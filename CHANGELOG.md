@@ -8,6 +8,10 @@ This project currently does NOT adheres to [Semantic Versioning](http://semver.o
 
 ## [Unreleased] - 2022-05
 
+### Fixed
+- Dependency issues plotly/dash/Werkzeug in `setup_pip.yaml`: we need to fix this on the longer term, see 
+also software_update_bugfixes branch on gEAR.
+
 ### Added
 - Install test 2 and branch for DHART install.
 - host_vars (re-organise group_vars)
