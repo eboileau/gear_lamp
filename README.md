@@ -49,7 +49,10 @@ ansible-playbook site.yml --tags [tag] --check -v 2>&1 | tee output.log
 
 **Note:** This playbook installs the **DHART** branch, and whatever latest commits were made, for instance values in `www/site_domain_prefs.json` are used _as is_. Default DB-related variables (`group_vars/all`) must match the settings in `gear.ini`, see also `create_schema.sql`.
 
-**Note:** When running CGI scripts through the web server, `PATH` does not see the virtual environment. Solutions such as [How to use Python virtual environments with mod_wsgi](https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html) do not seem to work for CGI scripts. So far, the solution is to specify the full path to the interpreter (`#!/usr/local/envs/dhart/bin/python`), so that the shell can find the local installation when it attempts to execute CGI programs. Hence default variables (`group_vars/all`) such as `python_venv_name` _must_ match the shebang in all CGI scripts. I think this also holds for the `www/p` script. If installing the **DHART** branch, then there is nothing to do.
+**Note:** When running CGI scripts through the web server, `PATH` does not see the virtual environment. Solutions such as [How to use Python virtual environments with mod_wsgi](https://modwsgi.readthedocs.io/en/master/user-guides/virtual-environments.html) do not seem to work for CGI scripts. So far, the solution is to specify the full path to the interpreter (`#!/usr/local/envs/dhart/bin/python`), so that the shell can find the local installation when it attempts to execute CGI programs. Hence default variables (`group_vars/all`) such as `python_venv_name` _must_ match the shebang in all CGI scripts. I think this also holds for the `gEAR/www/p` script. For practical purposes, this has also been done for the `gEAR/bin` scripts (in particular to run `db-config`). If installing the **DHART** branch, then there is nothing to do.
+
+**Note:** Running `db-config` will create the DB, download the annotations, and load them to the respective DB tables. This is currently done using scripts 
+under `gEAR/bin` (another way would be to use MySQL dumps, but we would need an appropriate _loader_, i.e. we don't want to install the whole Ensembl data, or redefine tables). Some default variables are specified in `group_vars/all`, such as release number, _etc._, but URLs are hard coded in `dump_db.yaml`. The list of organisms (`db/configure/vars/main.yaml`) is fixed, and must match the one defined in the DB (`create_schema.sql`)!
 
 
 ### Install notes - eboileau@gear 
@@ -63,6 +66,7 @@ the package will NOT be installed in the virtual environment). `pip show diffxpy
 
 - For `TASK [web/configure : Clone source code]`, we get `[WARNING]: Unable to use /var/www/.ansible/tmp as temporary directory, failing back to system: [Errno 13] Permission denied: '/var/www/.ansible'`. This is because we performs this task as Apache user (www-data), but /var/www is owned by root.
 
+- Running `dump_db.yaml` only is not harmless, this will load annotations each time to the DB (or results in an error for loading gene ontologies), unless maybe if we run the _full config_ (will the DB be re-created?)... The loader scripts (gEAR) should all be made _re-run safe_ !
 
 ### Install notes - eboileau@dhart
 

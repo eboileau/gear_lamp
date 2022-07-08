@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project currently does NOT adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [Unreleased] - 2022-07
+
+### Added
+- MySQL handler.
+
+### Changed
+- Database db configure: download annotations and load to DB.
+
+
 ## [Unreleased] - 2022-05
 
 ### Fixed
@@ -21,6 +30,7 @@ also software_update_bugfixes branch on gEAR.
 - Install app as www-data.
 - Clone using deploy keys (per server), and checkout DHART/dev branch.
 - Revert back to HTTPS cloning without deploy keys.
+
 
 ## [Unreleased] - 2022-04
 

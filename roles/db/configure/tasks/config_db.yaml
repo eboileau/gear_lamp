@@ -1,0 +1,36 @@
+---
+# This playbook create db user and give permissions
+# from https://github.com/IGS/gEAR/blob/main/docs/setup.mysql.md
+
+#- name: Configure SELinux to start mysql on any port
+  #seboolean:
+    #name: mysql_connect_any
+    #state: true
+    #persistent: yes
+  #when: sestatus.rc != 0
+
+- name: Start MySQL service
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Create application DB
+  mysql_db:
+    name: "{{ dbname }}"
+    state: present
+
+- name: Create application DB user
+  mysql_user:
+    name: "{{ dbuser }}"
+    priv: "*.*:ALL"
+    
+- name: Dump to DB
+  mysql_db:
+    name: "{{ dbname }}"
+    state: import
+    target: "{{ app_directory }}/gEAR/create_schema.sql"
+    force: yes
+  notify: Restart Apache
+    
+       

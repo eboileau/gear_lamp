@@ -1,0 +1,51 @@
+---
+# This playbook downloads gene tables, process and load them to the DB
+
+- name: Download dumps (actually data files) for selected organisms
+  shell:
+    cmd: |
+      rsync -a --delete \
+          rsync://ftp.ensembl.org/ensembl/pub/release-{{ annotation_release }}/genbank/{{ item.key }} \
+          {{ app_directory }}/gEAR/annotations
+  with_items: "{{ organisms }}"
+
+- name: Load annotations to DB gene tables
+  command: 
+    cmd: "{{ app_directory }}/gEAR/bin/load_ensembl_gbk_annotations.py -i {{ app_directory }}/gEAR/annotations/{{ item.key }} -id {{ item.value }} -r {{ annotation_release }}"
+  with_items: "{{ organisms }}"
+  become_user: "{{ app_user }}"
+
+- name: Download functional annotations
+  shell:
+    cmd: "wget {{ go_db }} -P {{ app_directory }}/gEAR/annotations"
+
+- name: Load functional annotations to DB go table
+  command: 
+    cmd: "{{ app_directory }}/gEAR/bin/load_gene_ontology.py -i {{ app_directory }}/gEAR/annotations/go.obo"
+  become_user: "{{ app_user }}"
+
+- name: Download aliases for selected organisms
+  shell:
+    cmd: |
+      rsync -a --delete \
+          rsync://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/{{ item.key|capitalize }}.gene_info.gz \
+          {{ app_directory }}/gEAR/annotations
+  with_items: "{{ organisms }}"
+  when: "item.value != 5"
+  
+- name: Download aliases for Danio rerio
+  shell:
+    cmd: |
+      rsync -a --delete \
+          rsync://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Non-mammalian_vertebrates/Danio_rerio.gene_info.gz \
+          {{ app_directory }}/gEAR/annotations
+  
+- name: Load aliases to DB symbol table, restart MySQL/Apache
+  command: 
+    cmd: "{{ app_directory }}/gEAR/bin/load_gene_synonyms.py -i {{ app_directory }}/gEAR/annotations/{{ item.key|capitalize }}.gene_info.gz -id {{ item.value }}"
+  with_items: "{{ organisms }}"
+  become_user: "{{ app_user }}"
+  notify: 
+    - Restart MySQL 
+    - Restart Apache
+    

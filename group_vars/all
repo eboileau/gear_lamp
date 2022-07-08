@@ -22,3 +22,10 @@ dbuser: dhart
 dbname: dhart_db
 # default
 mysql_port: 3306 
+
+# DB dumps
+# gene annotation - ensembl/genbank ftp.ensembl.org/ensembl/pub/release-{{ annotation_release }}/genbank/
+annotation_release: 106
+# Functional annotation
+go_db: http://purl.obolibrary.org/obo/go.obo
+# gene aliases - ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO

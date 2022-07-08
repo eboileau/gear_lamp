@@ -1,0 +1,16 @@
+---
+# these have to be as defined exactly as in create_schema.sql 
+organisms:
+  - key: homo_sapiens
+    value: 1
+  - key: mus_musculus
+    value: 2
+  - key: rattus_norvegicus
+    value: 3
+  - key: sus_scrofa
+    value: 4
+  - key: danio_rerio
+    value: 5
+    
+    
+    
