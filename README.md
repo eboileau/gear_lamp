@@ -14,8 +14,7 @@ pip install --upgrade pip
 python -m pip install ansible
 ```
 
-The inventory file defines the nodes in which the stack is configured.
-Defaults are set in `config file = /etc/ansible/ansible.cfg`.
+The inventory file defines the nodes in which the stack is configured. Check [Ansible (quick setup)](#ansible).
 
 Basic setup instructions are taken from the [gEAR setup page](https://github.com/IGS/gEAR/blob/main/docs/setup.new_server.notes.md).
 However, we made significant changes, including upgrade to Python 3.9.2, and install of pinned version of Python packages in a virtual environment.
@@ -78,3 +77,38 @@ the package will NOT be installed in the virtual environment). `pip show diffxpy
 - After finalising the installation, install `diffxpy` (follow the same fix for now): `pip install git+https://github.com/adkinsrs/diffxpy.git@b2ebeb0fb7c6c215d51264cd258edf9d013ff021` in the dhart env (we need to activate the environment as www-data user, otherwise
 the package will NOT be installed in the virtual environment). `pip show diffxpy` should show _e.g._ `/usr/local/envs/dhart/lib/python3.9/site-packages`.
 
+
+<a id="ansible"></a>
+
+## Ansible (quick setup)
+
+Defaults are set in `config file = /etc/ansible/ansible.cfg`. A minimal configuration file looks like:
+
+```
+[defaults]
+inventory = /etc/ansible/hosts/hosts.ini, /home/eboileau/.ansible_local_inventory.ini
+remote_user = eboileau
+
+[ssh_connection]
+pipelining = True
+
+[privilege_escalation]
+become = True
+```
+
+where `/etc/ansible/hosts/hosts.ini` is *e.g.* 
+
+```
+gear ansible_host=gear_IP
+dhart ansible_host=dhart_IP
+```
+
+and `/home/eboileau/.ansible_local_inventory.ini` is
+
+```
+[all:vars]
+ansible_become_password=your_remote_password
+```
+
+To list available hosts, use `ansible all --list-hosts`, or list all `ansible-inventory --list`.
+For more information on how to use Ansible, consult the [Ansible documentation](https://docs.ansible.com/ansible/latest/index.html).
