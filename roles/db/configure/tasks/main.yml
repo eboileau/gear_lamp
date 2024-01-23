@@ -1,4 +1,4 @@
-- include: config_db.yaml
-- include: dump_db.yaml
+- import_tasks: config_db.yaml
+- import_tasks: dump_db.yaml
     
        

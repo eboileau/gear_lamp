@@ -9,10 +9,10 @@ repository: https://github.com/dieterich-lab/gEAR.git
 app_user: www-data
 
 # Defaults requirements gEAR v0.9.0 (master) are partly overridden
-# Use system Python 3.9.2 to install virtual environment
-# Debian GNU/Linux 11 (bullseye) - 5.10.0-11-amd64
+# Use system Python 3.11.2 to install virtual environment
+# Debian GNU/Linux 12 (bookworm) - 6.1.0-17-amd64
 
-python_version: 3.9.2
+python_version: 3.11.2
 python_dist_name:  "Python-{{ python_version }}"
 python_venv_base: "/usr/local/envs"
 python_venv_name: "{{ python_venv_base }}/dhart"

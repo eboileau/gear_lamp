@@ -5,6 +5,14 @@ Changes to the DHART installation playbook (and to the gEAR setup) will be docum
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project currently does NOT adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - 2024-01
+
+### Changed
+- Update to Ansible 2.16.2 (Python 3.11.2)
+- Unpin all python dependencies, add diffxpy
+
+### Fixed
+- Temporary install of MulticoreTSNE
 
 ## [Unreleased] - 2022-07
 

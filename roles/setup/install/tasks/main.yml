@@ -1,2 +1,2 @@
-- include: setup_libs.yaml
-- include: setup_pip.yaml
+- import_tasks: setup_libs.yaml
+- import_tasks: setup_pip.yaml

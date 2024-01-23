@@ -1,5 +1,4 @@
 ---
-# requirements from https://github.com/dieterich-lab/gEAR/blob/main/docs/setup.python.md
 # see CHANGELOG
 required_libs:
     - build-essential

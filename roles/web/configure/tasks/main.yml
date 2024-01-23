@@ -1,2 +1,2 @@
-- include: config_apache.yml
-- include: config_git.yml
+- import_tasks: config_apache.yml
+- import_tasks: config_git.yml
